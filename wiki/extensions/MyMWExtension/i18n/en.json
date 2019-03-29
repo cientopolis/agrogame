@@ -1,0 +1,11 @@
+{
+    "@metadata": {
+        "authors": [
+            "Blas"
+        ]
+    },
+    "myMWExtension": "My Extension",
+    "myMWExtension-desc": "",
+    "special-myMWExtension-title": "My MW Extension",
+    "special-myMWExtension-intro": ""
+}

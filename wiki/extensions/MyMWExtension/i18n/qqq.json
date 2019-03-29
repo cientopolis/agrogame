@@ -1,0 +1,11 @@
+{
+    "@metadata": {
+        "authors": [
+            "Blas"
+        ]
+    },
+    "myMWExtension": "The name of the extension",
+    "myMWExtension-desc": "{{desc|name=MyMWExtension|url=}}",
+    "special-myMWExtension-title": "Title of the special page Special:MyMWExtension",
+    "special-myMWExtension-intro": "Description appearing on top of <tvar|1>Special:{{ll|MyMWExtension}}</>."
+}
