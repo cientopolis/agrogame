@@ -1,0 +1,9 @@
+/**
+
+!/.gitignore
+
+#!/wiki/
+#!/wiki/*
+#!/wiki/extensions/
+#!/wiki/extensions/*
+#!/wiki/extensions/MyMWExtension/
