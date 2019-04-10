@@ -36,4 +36,5 @@ git config core.sparsecheckout true
 ```
 Creamos un archivo `sparse-checkout` en .git/info/
 
-4. `git pull origin master`
+4. 
+`git pull origin master`
