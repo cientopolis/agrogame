@@ -12,7 +12,8 @@
     "AutoloadClasses": {
         "SpecialMyMWExtension": "specials/SpecialMyMWExtension.php",
         "MyMWExtensionHooks": "includes/MyMWExtensionHooks.php",
-        "GamLog": "includes/GamLog.php"
+        "GamLog": "includes/GamLog.php",
+        "WebServer": "includes/WebServer.php"
     },
     "Hooks": {
         "UserLoginComplete": "MyMWExtensionHooks::onUserLoginComplete",
