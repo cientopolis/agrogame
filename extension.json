@@ -26,5 +26,8 @@
     "ExtensionMessagesFiles": {
         "MyMWExtensionAlias": "MyMWExtension.alias.php"
     },
-    "type": "other"
+    "type": "other",
+    "config": {
+		"ArduinoWebServerOn": false
+	}
 }

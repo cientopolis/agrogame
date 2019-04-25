@@ -60,11 +60,10 @@ class MyMWExtensionHooks {
         GamLog::write("$user (id: ". $user->getId() . ") logueado.");
 
         $params = array(
-            'param1' => 'valparam1',
-            'param2' => 'valparam2'
+            'LOGIN' => 'T'
         );
 
-        WebServer::Post($params);
+        WebServer::request($params);
     }
 
     public static function onLocalUserCreated( $user, $autocreated ) {
