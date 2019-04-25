@@ -28,6 +28,7 @@
     },
     "type": "other",
     "config": {
-		"ArduinoWebServerOn": false
+        "ArduinoWerbServerOn": false,
+        "ArduinoWebServerIP": "127.0.0.1"
 	}
 }

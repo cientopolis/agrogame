@@ -6,12 +6,12 @@ class MyMWExtensionHooks {
     //Se ejecuta cuando se hace el update.php
     public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
 
-        GamLog::write("Creating gamification table...");
+        //GamLog::write("Creating gamification table...");
         $updater->addExtensionTable( 'gamification', __DIR__ . "/../sql/patch-mymwextension.sql" );
-        GamLog::write("gamification table created.");
-        GamLog::write("Adding existing users...");
+        //GamLog::write("gamification table created.");
+        //GamLog::write("Adding existing users...");
         $updater->addExtensionUpdate([ [ __CLASS__, 'addExistingUsers' ] ]);
-        GamLog::write("Existing users added.");
+        //GamLog::write("Existing users added.");
     }
 
 
@@ -48,6 +48,8 @@ class MyMWExtensionHooks {
     //Se ejecuta cuando un usuario se loguea correctamente
     public static function onUserLoginComplete( User &$user, &$inject_html, $direct ) {
 
+        global $wgArduinoWebServerOn;
+
         $id_user = $user->getId();
 
         $dbw = wfGetDB( DB_MASTER );
@@ -57,18 +59,20 @@ class MyMWExtensionHooks {
             ["gam_user_id = $id_user"]
         );
 
-        GamLog::write("$user (id: ". $user->getId() . ") logueado.");
+        //GamLog::write("$user (id: ". $user->getId() . ") logueado.");
 
-        $params = array(
-            'LOGIN' => 'T'
-        );
+        if ($wgArduinoWebServerOn){
+            $params = array('LOGIN' => 'T');
+            WebServer::get_request($params);
+        }/*else{
+            GamLog::write("No hay un servidor web configurado.");
+        }*/
 
-        WebServer::request($params);
     }
 
     public static function onLocalUserCreated( $user, $autocreated ) {
 
-        GamLog::write('A new user was created, adding to database...');
+        //GamLog::write('A new user was created, adding to database...');
         $dbw = wfGetDB( DB_MASTER );
         $dbw->insert(
             'gamification',
@@ -77,7 +81,7 @@ class MyMWExtensionHooks {
                 'gam_user_text' => $user->getName()
             ]
         );
-        GamLog::write('New user added.');
+        //GamLog::write('New user added.');
     }
 
 }
