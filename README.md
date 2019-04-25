@@ -19,3 +19,11 @@ wfLoadExtension('MyMWExtension');
 ```bash
 $: php wiki/maintenance/update.php
 ```
+## Servidor Web Arduino
+
+La extension cuenta con la posiblidad de enviar las acciones realizadas dentro de la wiki a un servidor web. 
+
+Para configurar el servidor web:
+
+ - Activar en la extension `$wgArduinoWebServerOn = true`.
+ - Agregar la IP del servidor `$wgArduinoWebServerIP = 'dirección ip'`.
