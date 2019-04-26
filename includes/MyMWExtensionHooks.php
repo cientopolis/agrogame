@@ -62,7 +62,7 @@ class MyMWExtensionHooks {
         //GamLog::write("$user (id: ". $user->getId() . ") logueado.");
 
         if ($wgArduinoWebServerOn){
-            $params = array('LOGIN' => 'T');
+            $params = array('login' => 't');
             WebServer::get_request($params);
         }/*else{
             GamLog::write("No hay un servidor web configurado.");
@@ -71,6 +71,8 @@ class MyMWExtensionHooks {
     }
 
     public static function onLocalUserCreated( $user, $autocreated ) {
+
+        global $wgArduinoWebServerOn;
 
         //GamLog::write('A new user was created, adding to database...');
         $dbw = wfGetDB( DB_MASTER );
@@ -82,6 +84,13 @@ class MyMWExtensionHooks {
             ]
         );
         //GamLog::write('New user added.');
+
+        if ($wgArduinoWebServerOn){
+            $params = array('created-user' => 't');
+            WebServer::get_request($params);
+        }
+
+
     }
 
 }
