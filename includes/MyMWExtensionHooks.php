@@ -93,4 +93,12 @@ class MyMWExtensionHooks {
 
     }
 
+
+    /* Hook para cargar los módulos y usar js y css en la extensión */
+    public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
+        GamLog::write("Está cargando bien la Hook.");
+        $out->addModules("ext.myMWExtension");
+        $out->addHeadItem("barra-progreso", "<a href=Special:MyPage>Mi progreso</a>");
+     }
+
 }

@@ -18,7 +18,8 @@
     "Hooks": {
         "UserLoginComplete": "MyMWExtensionHooks::onUserLoginComplete",
         "LoadExtensionSchemaUpdates": "MyMWExtensionHooks::onLoadExtensionSchemaUpdates",
-        "LocalUserCreated": "MyMWExtensionHooks::onLocalUserCreated"
+        "LocalUserCreated": "MyMWExtensionHooks::onLocalUserCreated",
+        "BeforePageDisplay": "MyMWExtensionHooks::onBeforePageDisplay"
     },
     "SpecialPages": {
         "MyMWExtension": "SpecialMyMWExtension"
@@ -30,5 +31,16 @@
     "config": {
         "ArduinoWerbServerOn": false,
         "ArduinoWebServerIP": "127.0.0.1"
+    },
+    "ResourceModules": {
+        "ext.myMWExtension": {
+            "scripts": [
+                "ext.myMWExtension.core.js"
+            ]
+        }
+    },
+	"ResourceFileModulePaths": {
+		"localBasePath": "modules",
+		"remoteExtPath": "MyMWExtension/modules"
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-//Clase generadora de request para el servidor web
+//Clase generadora de request para el servidor web, recibe un arreglo con los parámetros que enviará vía get.
 class WebServer {
 
     public static function get_request($params){
