@@ -40,6 +40,13 @@ class MyMWExtensionHooks {
                 ]
             );
 
+            $dbw->insert(
+                'gamification_progress',
+                [
+                    'gam_id' => $row->user_id,
+                ]
+            );
+
         }
         
         $dbw->endAtomic( __METHOD__ );
