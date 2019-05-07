@@ -13,13 +13,15 @@
         "SpecialMyMWExtension": "specials/SpecialMyMWExtension.php",
         "MyMWExtensionHooks": "includes/MyMWExtensionHooks.php",
         "GamLog": "includes/GamLog.php",
-        "WebServer": "includes/WebServer.php"
+        "WebServer": "includes/WebServer.php",
+        "UserModel": "includes/model/UserModel.php"
     },
     "Hooks": {
         "UserLoginComplete": "MyMWExtensionHooks::onUserLoginComplete",
         "LoadExtensionSchemaUpdates": "MyMWExtensionHooks::onLoadExtensionSchemaUpdates",
         "LocalUserCreated": "MyMWExtensionHooks::onLocalUserCreated",
-        "BeforePageDisplay": "MyMWExtensionHooks::onBeforePageDisplay"
+        "BeforePageDisplay": "MyMWExtensionHooks::onBeforePageDisplay",
+        "ParserFirstCallInit": "MyMWExtensionHooks::onParserFirstCallInit"
     },
     "SpecialPages": {
         "MyMWExtension": "SpecialMyMWExtension"

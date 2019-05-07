@@ -100,12 +100,34 @@ class MyMWExtensionHooks {
 
     }
 
-
-    /* Hook para cargar los módulos y usar js y css en la extensión */
+    /* Hook para cargar los módulos y usar js y css en la extensión.
+        No está en uso.
+    */
     public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
         GamLog::write("Está cargando bien la Hook.");
         $out->addModules("ext.myMWExtension");
         $out->addHeadItem("barra-progreso", "<a href=Special:MyPage>Mi progreso</a>");
+
+
+        $gamificationuser = UserModel::get_info($out->getUser());
+        GamLog::write($gamificationuser['created_pages']);
+        GamLog::write($gamificationuser['modified_pages']);
+
+
+        $progress = UserModel::get_progress($out->getUser());
+        GamLog::write($progress['created_page']);
+        GamLog::write($progress['modified_page']);
+
+     }
+
+     public static function onParserFirstCallInit( Parser $parser ) {
+		
+        $parser->setHook( 'helloworld', [ self::class, 'renderHelloWorld' ] );
+
+     }
+
+     public static function renderHelloWorld(){
+         return htmlspecialchars( "HOLA MUNDOOOOOOOOOOO" );
      }
 
 }
