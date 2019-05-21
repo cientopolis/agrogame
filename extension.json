@@ -21,13 +21,15 @@
         "LoadExtensionSchemaUpdates": "MyMWExtensionHooks::onLoadExtensionSchemaUpdates",
         "LocalUserCreated": "MyMWExtensionHooks::onLocalUserCreated",
         "BeforePageDisplay": "MyMWExtensionHooks::onBeforePageDisplay",
-        "ParserFirstCallInit": "MyMWExtensionHooks::onParserFirstCallInit"
+        "ParserFirstCallInit": "MyMWExtensionHooks::onParserFirstCallInit",
+        "PageContentSaveComplete": "MyMWExtensionHooks::onPageContentSaveComplete"
     },
     "SpecialPages": {
         "MyMWExtension": "SpecialMyMWExtension"
     },
     "ExtensionMessagesFiles": {
-        "MyMWExtensionAlias": "MyMWExtension.alias.php"
+        "MyMWExtensionAlias": "MyMWExtension.alias.php",
+        "ExampleExtensionMagic": "includes/ExampleExtension.i18n.php"
     },
     "type": "other",
     "config": {

@@ -3,20 +3,19 @@
 
 class MyMWExtensionHooks {
 
-    //Se ejecuta cuando se hace el update.php
+    /*
+     * Además de crear lo necesario en la BD, Completa las tablas con usuarios que ya existen.
+     */
     public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
 
-        //GamLog::write("Creating gamification table...");
         $updater->addExtensionTable( 'gamification', __DIR__ . "/../sql/patch-mymwextension.sql" );
-        //GamLog::write("gamification table created.");
-        //GamLog::write("Adding existing users...");
         $updater->addExtensionUpdate([ [ __CLASS__, 'addExistingUsers' ] ]);
-        //GamLog::write("Existing users added.");
+
     }
 
-
-    //Se ejecuta luego de crear la BD. Es una callback function llamada desde onLoadExtensionSchemaUpdates
-    //No es Hook
+    /*
+     * Completa las tablas con usuarios que ya existen
+     */
     public static function addExistingUsers(DatabaseUpdater $updater){
 
         $dbw = wfGetDB( DB_MASTER );
@@ -39,20 +38,15 @@ class MyMWExtensionHooks {
                     'gam_user_text' => $row->user_name
                 ]
             );
-
-            $dbw->insert(
-                'gamification_progress',
-                [
-                    'gam_id' => $row->user_id,
-                ]
-            );
-
         }
         
         $dbw->endAtomic( __METHOD__ );
     }
 
-    //Se ejecuta cuando un usuario se loguea correctamente
+    /*
+     * Aumenta la cantidad de loggins del usuario.
+     * Si esta configurado el servidor aduino envía una request de login.
+     */
     public static function onUserLoginComplete( User &$user, &$inject_html, $direct ) {
 
         global $wgArduinoWebServerOn;
@@ -66,22 +60,21 @@ class MyMWExtensionHooks {
             ["gam_user_id = $id_user"]
         );
 
-        //GamLog::write("$user (id: ". $user->getId() . ") logueado.");
-
         if ($wgArduinoWebServerOn){
             $params = array('login' => 't');
             WebServer::get_request($params);
-        }/*else{
-            GamLog::write("No hay un servidor web configurado.");
-        }*/
+        }
 
     }
 
+    /*
+     * Crea el usuario en la DB.
+     * Si hay servidor arduino configurado hace la respectiva request.
+     */
     public static function onLocalUserCreated( $user, $autocreated ) {
 
         global $wgArduinoWebServerOn;
 
-        //GamLog::write('A new user was created, adding to database...');
         $dbw = wfGetDB( DB_MASTER );
         $dbw->insert(
             'gamification',
@@ -90,7 +83,6 @@ class MyMWExtensionHooks {
                 'gam_user_text' => $user->getName()
             ]
         );
-        //GamLog::write('New user added.');
 
         if ($wgArduinoWebServerOn){
             $params = array('created-user' => 't');
@@ -100,11 +92,11 @@ class MyMWExtensionHooks {
 
     }
 
-    /* Hook para cargar los módulos y usar js y css en la extensión.
-        No está en uso.
+     /*Hook para cargar los módulos y usar js y css en la extensión.
+      *  No está en uso.
     */
     public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
-        GamLog::write("Está cargando bien la Hook.");
+        /*GamLog::write("Está cargando bien la Hook.");
         $out->addModules("ext.myMWExtension");
         $out->addHeadItem("barra-progreso", "<a href=Special:MyPage>Mi progreso</a>");
 
@@ -112,22 +104,44 @@ class MyMWExtensionHooks {
         $gamificationuser = UserModel::get_info($out->getUser());
         GamLog::write($gamificationuser['created_pages']);
         GamLog::write($gamificationuser['modified_pages']);
-
-
-        $progress = UserModel::get_progress($out->getUser());
-        GamLog::write($progress['created_page']);
-        GamLog::write($progress['modified_page']);
+        */
 
      }
+     
 
      public static function onParserFirstCallInit( Parser $parser ) {
 		
-        $parser->setHook( 'helloworld', [ self::class, 'renderHelloWorld' ] );
+        $parser->setFunctionHook( 'infoGamUser', [ self::class, 'infoGamUser' ] );
 
      }
 
-     public static function renderHelloWorld(){
-         return htmlspecialchars( "HOLA MUNDOOOOOOOOOOO" );
+     public static function infoGamUser( Parser $parser, $userName = '') {
+
+        $parser->disableCache();
+        $user = UserModel::getUserByName($userName);
+        $output = self::gamUserToHTML($user);
+        return $output;
      }
+
+
+     public static function gamUserToHTML($user){
+        return 
+        "
+        Creó al menos una página: " . ($user['gam_first_page_created'] ? "Si" : "No") . " \n
+        Modificó al menos una página: " . ($user['gam_first_page_modified'] ? "Si" : "No") . "\n
+        Cantidad de veces que inició sesión: " . ($user['gam_logins']);
+     }
+
+     public static function onPageContentSaveComplete( $wikiPage, $user, $content, $summary, $isMinor, $isWatch, $section, &$flags, $revision, $status, $baseRevId, $undidRevId ) {
+         
+        $id_user = $user->getId();
+
+        $dbw = wfGetDB( DB_MASTER );
+        $dbw->update(
+            'gamification',
+            ['gam_number_of_colaboration = gam_number_of_colaboration + 1'],
+            ["gam_user_id = $id_user"]
+        );
+      }
 
 }

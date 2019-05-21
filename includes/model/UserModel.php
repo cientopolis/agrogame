@@ -7,35 +7,24 @@
 
  Class UserModel{
 
-    public static function get_info($user){
+    /*
+     * Solo debe ser llamada con un usuario válido.
+     */
+    public static function getUserByName($userName){
 
         $dbr = wfGetDB( DB_REPLICA );
 
         $res = $dbr->select(
             'gamification',
-            ['gam_created_pages', 'gam_modified'],
-            "gam_id = " . $user->getId()
+            ['gam_first_page_created', 'gam_first_page_modified', 'gam_logins', 'gam_number_of_colaboration'],
+            "gam_user_text = \"$userName\""
         )->current();
 
         return [
-            'created_pages' => $res->gam_created_pages,
-            'modified_pages' => $res->gam_modified
-        ];
-    }
-
-    public static function get_progress($user){
-
-        $dbr = wfGetDB( DB_REPLICA );
-
-        $res = $dbr->select(
-            'gamification_progress',
-            ['gam_prog_created_page', 'gam_prog_modified_page'],
-            ["gam_id = " . $user->getId()]
-        )->current();
-
-        return [
-            'created_page' => $res->gam_prog_created_page, 
-            'modified_page' => $res->gam_prog_modified_page
+            'gam_first_page_created' => $res->gam_first_page_created,
+            'gam_first_page_modified' => $res->gam_first_page_modified,
+            'gam_logins' => $res->gam_logins,
+            'gam_number_of_colaboration' => $res->gam_number_of_colaboration
         ];
     }
 
