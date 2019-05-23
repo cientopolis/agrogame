@@ -111,11 +111,17 @@ class MyMWExtensionHooks {
 
      public static function gamUserToHTML($user){
 
-        return 
-        "
-        Creó al menos una página: " . ($user['gam_first_page_created'] ? "Si" : "No") . " \n
-        Modificó al menos una página: " . ($user['gam_first_page_modified'] ? "Si" : "No") . "\n
-        Cantidad de veces que inició sesión: " . ($user['gam_logins']);
+        $li1 = ($user['gam_first_page_created'] ? "Si" : "No");
+        $li2 = ($user['gam_first_page_modified'] ? "Si" : "No");
+        $li3 = ($user['gam_logins']);
+
+        return "
+        <ul>
+            <li><strong>Creó al menos una página:</strong> $li1</li>
+            <li><strong>Modificó al menos una página:</strong> $li2</li>
+            <li><strong>Cantidad de veces que inició sesión:</strong> $li3</li>
+        </ul>";
+
      }
 
      public static function onPageContentSaveComplete( $wikiPage, $user, $content, $summary, $isMinor, $isWatch, $section, &$flags, $revision, $status, $baseRevId, $undidRevId ) {
