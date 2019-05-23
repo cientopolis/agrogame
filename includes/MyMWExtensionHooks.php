@@ -90,24 +90,7 @@ class MyMWExtensionHooks {
         }
 
 
-    }
-
-     /*Hook para cargar los módulos y usar js y css en la extensión.
-      *  No está en uso.
-    */
-    public static function onBeforePageDisplay( OutputPage $out, Skin $skin ) {
-        /*GamLog::write("Está cargando bien la Hook.");
-        $out->addModules("ext.myMWExtension");
-        $out->addHeadItem("barra-progreso", "<a href=Special:MyPage>Mi progreso</a>");
-
-
-        $gamificationuser = UserModel::get_info($out->getUser());
-        GamLog::write($gamificationuser['created_pages']);
-        GamLog::write($gamificationuser['modified_pages']);
-        */
-
-     }
-     
+    }     
 
      public static function onParserFirstCallInit( Parser $parser ) {
 		
@@ -117,6 +100,8 @@ class MyMWExtensionHooks {
 
      public static function infoGamUser( Parser $parser, $userName = '') {
 
+        MWDebug::log('Que onda esto');
+        MWDebug::log('Y esto...');
         $parser->disableCache();
         $user = UserModel::getUserByName($userName);
         $output = self::gamUserToHTML($user);
@@ -125,6 +110,7 @@ class MyMWExtensionHooks {
 
 
      public static function gamUserToHTML($user){
+
         return 
         "
         Creó al menos una página: " . ($user['gam_first_page_created'] ? "Si" : "No") . " \n

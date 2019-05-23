@@ -20,7 +20,6 @@
         "UserLoginComplete": "MyMWExtensionHooks::onUserLoginComplete",
         "LoadExtensionSchemaUpdates": "MyMWExtensionHooks::onLoadExtensionSchemaUpdates",
         "LocalUserCreated": "MyMWExtensionHooks::onLocalUserCreated",
-        "BeforePageDisplay": "MyMWExtensionHooks::onBeforePageDisplay",
         "ParserFirstCallInit": "MyMWExtensionHooks::onParserFirstCallInit",
         "PageContentSaveComplete": "MyMWExtensionHooks::onPageContentSaveComplete"
     },
