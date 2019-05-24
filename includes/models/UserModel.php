@@ -56,7 +56,7 @@ Class UserModel{
             'gam_number_of_colaboration' => $res->gam_number_of_colaboration
         ];
     }
-
+    
     public static function incLogins($user){
         $id_user = $user->getId();
         $dbw = wfGetDB( DB_MASTER );
@@ -73,6 +73,26 @@ Class UserModel{
         $dbw->update(
             'gamification',
             ['gam_number_of_colaboration = gam_number_of_colaboration + 1'],
+            ["gam_user_id = $id_user"]
+        );
+    }
+
+    public static function createdPage($user){
+        $id_user = $user->getId();
+        $dbw = wfGetDB( DB_MASTER );
+        $dbw->update(
+            'gamification',
+            ['gam_first_page_created = true'],
+            ["gam_user_id = $id_user"]
+        );
+    }
+
+    public static function modifiedPage($user){
+        $id_user = $user->getId();
+        $dbw = wfGetDB( DB_MASTER );
+        $dbw->update(
+            'gamification',
+            ['gam_first_page_modified = true'],
             ["gam_user_id = $id_user"]
         );
     }

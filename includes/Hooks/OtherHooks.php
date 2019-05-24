@@ -39,6 +39,7 @@ class OtherHooks {
     }
 
     public static function onPageContentSaveComplete( $wikiPage, $user, $content, $summary, $isMinor, $isWatch, $section, &$flags, $revision, $status, $baseRevId, $undidRevId ) {
+        ($wikiPage->getTitle()->getFirstRevision()->getId() == $revision->getId())?     UserModel::createdPage($user) : UserModel::modifiedPage($user);
         UserModel::incColaborations($user);
     }
 
