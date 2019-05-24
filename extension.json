@@ -11,17 +11,18 @@
     },
     "AutoloadClasses": {
         "SpecialMyMWExtension": "specials/SpecialMyMWExtension.php",
-        "MyMWExtensionHooks": "includes/MyMWExtensionHooks.php",
-        "GamLog": "includes/GamLog.php",
+        "OtherHooks": "includes/Hooks/OtherHooks.php",
+        "UserHooks": "includes/Hooks/UserHooks.php",
+        "UpdateHooks": "includes/Hooks/UpdateHooks.php",
         "WebServer": "includes/WebServer.php",
-        "UserModel": "includes/model/UserModel.php"
+        "UserModel": "includes/models/UserModel.php"
     },
     "Hooks": {
-        "UserLoginComplete": "MyMWExtensionHooks::onUserLoginComplete",
-        "LoadExtensionSchemaUpdates": "MyMWExtensionHooks::onLoadExtensionSchemaUpdates",
-        "LocalUserCreated": "MyMWExtensionHooks::onLocalUserCreated",
-        "ParserFirstCallInit": "MyMWExtensionHooks::onParserFirstCallInit",
-        "PageContentSaveComplete": "MyMWExtensionHooks::onPageContentSaveComplete"
+        "UserLoginComplete": "UserHooks::onUserLoginComplete",
+        "LoadExtensionSchemaUpdates": "UpdateHooks::onLoadExtensionSchemaUpdates",
+        "LocalUserCreated": "UserHooks::onLocalUserCreated",
+        "ParserFirstCallInit": "OtherHooks::onParserFirstCallInit",
+        "PageContentSaveComplete": "OtherHooks::onPageContentSaveComplete"
     },
     "SpecialPages": {
         "MyMWExtension": "SpecialMyMWExtension"
