@@ -22,7 +22,8 @@
         "LoadExtensionSchemaUpdates": "UpdateHooks::onLoadExtensionSchemaUpdates",
         "LocalUserCreated": "UserHooks::onLocalUserCreated",
         "ParserFirstCallInit": "OtherHooks::onParserFirstCallInit",
-        "PageContentSaveComplete": "OtherHooks::onPageContentSaveComplete"
+        "PageContentSaveComplete": "OtherHooks::onPageContentSaveComplete",
+        "BeforePageDisplay": "OtherHooks::onBeforePageDisplay"
     },
     "SpecialPages": {
         "MyMWExtension": "SpecialMyMWExtension"
@@ -39,8 +40,11 @@
     "ResourceModules": {
         "ext.myMWExtension": {
             "scripts": [
+                "ext.myMWExtension.progressbarjs.js",
                 "ext.myMWExtension.core.js"
-            ]
+                
+            ],
+            "styles": "ext.myMWExtension.css"
         }
     },
 	"ResourceFileModulePaths": {
