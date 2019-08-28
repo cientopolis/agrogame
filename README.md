@@ -5,13 +5,13 @@
 **1.** Clonar el repositorio en la carpeta `extensions` de la wiki con el nombre MyMWExtension
 
 ```git
-git clone https://github.com/cientopolis/agrogame.git MyMWExtension
+git clone https://github.com/cientopolis/agrogame.git Agrogame
 ```
 
 **2.** Cargar la extensión en el archivo `LocalSettings.php` de la wiki: 
 
 ```php
-wfLoadExtension('MyMWExtension');
+wfLoadExtension('Agrogame');
 ```
 
 **3.** Actualizar wiki para agregar los cambios a la base de datos:
@@ -19,7 +19,19 @@ wfLoadExtension('MyMWExtension');
 ```bash
 $: php wiki/maintenance/update.php
 ```
-**4.** Instalar dependencia: [Extensión: Create User Page](https://www.mediawiki.org/wiki/Extension:Create_User_Page)
+
+**4.** Instalar dependencia: [Extensión: RatePage](https://www.mediawiki.org/wiki/Extension:RatePage)
+
+Descargar la extensión, agregarla y configurarla en el archivo `LocalSettings.php` de la wiki:
+
+```php
+wfLoadExtension( 'RatePage' );
+$wgRPRatingAllowedNamespaces = [0];
+```
+
+## Los siguientes pasos no funcionan. Hay una actualización pendiente.
+
+**?.** Instalar dependencia: [Extensión: Create User Page](https://www.mediawiki.org/wiki/Extension:Create_User_Page)
 
 Descargar la extensión, agregarla y configurarla en el archivo `LocalSettings.php` de la wiki:
 
