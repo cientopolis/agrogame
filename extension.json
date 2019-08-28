@@ -1,35 +1,23 @@
 {
-    "name": "MyMWExtension",
+    "name": "Agrogame",
     "author": "Blas",
     "license-name": "GPL-2.0+",
     "version": "0.0.1",
-    "namemsg": "myMWExtension",
-    "descriptionmsg": "myMWExtension-desc",
+    "namemsg": "Agrogame",
+    "descriptionmsg": "Agrogame-desc",
     "manifest_version": 1,
     "MessagesDirs": {
-        "MyMWExtension": [ "i18n" ]
+        "Agrogame": [ "i18n" ]
     },
     "AutoloadClasses": {
-        "SpecialMyMWExtension": "specials/SpecialMyMWExtension.php",
-        "OtherHooks": "includes/Hooks/OtherHooks.php",
-        "UserHooks": "includes/Hooks/UserHooks.php",
-        "UpdateHooks": "includes/Hooks/UpdateHooks.php",
-        "WebServer": "includes/WebServer.php",
-        "UserModel": "includes/models/UserModel.php"
-    },
-    "Hooks": {
-        "UserLoginComplete": "UserHooks::onUserLoginComplete",
-        "LoadExtensionSchemaUpdates": "UpdateHooks::onLoadExtensionSchemaUpdates",
-        "LocalUserCreated": "UserHooks::onLocalUserCreated",
-        "ParserFirstCallInit": "OtherHooks::onParserFirstCallInit",
-        "PageContentSaveComplete": "OtherHooks::onPageContentSaveComplete",
-        "BeforePageDisplay": "OtherHooks::onBeforePageDisplay"
+        "SpecialAgrogame": "specials/SpecialAgrogame.php",
+        "ApiAgroknowledge": "includes/ApiAgroknowledge.php"
     },
     "SpecialPages": {
-        "MyMWExtension": "SpecialMyMWExtension"
+        "Agrogame": "SpecialAgrogame"
     },
     "ExtensionMessagesFiles": {
-        "MyMWExtensionAlias": "MyMWExtension.alias.php",
+        "AgrogameAlias": "Agrogame.alias.php",
         "ExampleExtensionMagic": "includes/ExampleExtension.i18n.php"
     },
     "type": "other",
@@ -37,18 +25,11 @@
         "ArduinoWerbServerOn": false,
         "ArduinoWebServerIP": "127.0.0.1"
     },
-    "ResourceModules": {
-        "ext.myMWExtension": {
-            "scripts": [
-                "ext.myMWExtension.progressbarjs.js",
-                "ext.myMWExtension.core.js"
-                
-            ],
-            "styles": "ext.myMWExtension.css"
-        }
-    },
 	"ResourceFileModulePaths": {
 		"localBasePath": "modules",
-		"remoteExtPath": "MyMWExtension/modules"
+		"remoteExtPath": "Agrogame/modules"
+    },
+    "APIModules": {
+        "agroknowledge": "ApiAgroknowledge"
 	}
 }

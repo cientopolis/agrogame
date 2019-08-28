@@ -1,13 +1,13 @@
 <?php
 /**
- * myMWExtension SpecialPage for MyMWExtension extension
+ * agrogame SpecialPage for agrogame extension
  *
  * @file
  * @ingroup Extensions
  */
-class SpecialMyMWExtension extends SpecialPage {
+class SpecialAgrogame extends SpecialPage {
 	public function __construct() {
-		parent::__construct( 'myMWExtension' );
+		parent::__construct( 'agrogame' );
 	}
 
 	/**
@@ -17,9 +17,9 @@ class SpecialMyMWExtension extends SpecialPage {
 	 */
 	public function execute( $sub ) {
 		$out = $this->getOutput();
-		$out->setPageTitle( $this->msg( 'special-myMWExtension-title' ) );
+		$out->setPageTitle( $this->msg( 'special-agrogame-title' ) );
 		$out->addHelpLink( 'How to become a MediaWiki hacker' );
-		$out->addWikiMsg( 'special-myMWExtension-intro' );
+		$out->addWikiMsg( 'special-agrogame-intro' );
 	}
 
 	protected function getGroupName() {
