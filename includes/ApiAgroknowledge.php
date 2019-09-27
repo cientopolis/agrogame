@@ -16,11 +16,12 @@ class ApiAgroknowledge extends ApiBase {
 				 ) rv2 ON rv3.rv_page_id = rv2.rv_page_id AND rv3.rv_date = rv2.min_date
 				) as rv4 ON p.page_id = rv4.rv_page_id
 		WHERE p.page_namespace = 0
-		ORDER BY p.page_id DESC
+		ORDER BY p.page_id ASC
 		', __METHOD__, 0);
 
 		$i = 0;
 		$page = [];
+		$this->getResult()->addValue(null, "n", $res3->numRows());
 		foreach( $res3 as $row ) {
 			$page["id"] = $row->page_id;
 			$page["last_answer"] = $row->last_answer;
