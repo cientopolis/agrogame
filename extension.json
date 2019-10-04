@@ -11,7 +11,9 @@
     },
     "AutoloadClasses": {
         "SpecialAgrogame": "specials/SpecialAgrogame.php",
-        "ApiAgroknowledge": "includes/ApiAgroknowledge.php"
+        "ApiAgroknowledge": "includes/ApiAgroknowledge.php",
+        "ApiAVGPage": "includes/ApiAVGPage.php",
+        "AgrogameHooks": "includes/AgrogameHooks.php"
     },
     "SpecialPages": {
         "Agrogame": "SpecialAgrogame"
@@ -29,7 +31,21 @@
 		"localBasePath": "modules",
 		"remoteExtPath": "Agrogame/modules"
     },
+    "ResourceModules":{
+        "ext.agrogame":{
+            "scripts":[
+                "ext.agrogame.js"
+            ],
+            "styles":[
+                "ext.agrogame.css"
+            ]
+        }
+    },
     "APIModules": {
-        "agroknowledge": "ApiAgroknowledge"
-	}
+        "agroknowledge": "ApiAgroknowledge",
+        "avgpage":"ApiAVGPage"
+    },
+    "Hooks":{
+        "BeforePageDisplay": "AgrogameHooks::onBeforePageDisplay"
+    }
 }
