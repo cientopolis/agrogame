@@ -46,6 +46,9 @@
         "avgpage":"ApiAVGPage"
     },
     "Hooks":{
-        "BeforePageDisplay": "AgrogameHooks::onBeforePageDisplay"
+        "BeforePageDisplay": "AgrogameHooks::onBeforePageDisplay",
+        "LoadExtensionSchemaUpdates": "AgrogameHooks::onLoadExtensionSchemaUpdates",
+        "UserLoginComplete": "AgrogameHooks::onUserLoginComplete",
+        "PageContentSaveComplete": "AgrogameHooks::onPageContentSaveComplete"
     }
 }
