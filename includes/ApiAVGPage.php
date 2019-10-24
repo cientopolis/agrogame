@@ -17,9 +17,13 @@ class ApiAVGPage extends ApiBase {
             __METHOD__,
             array("GROUP BY" => "rv_page_id")
         );
-        $this->getResult()->addValue(null, "title", $title);
-        //$this->getResult()->addValue(null, "page_id", $res->current()->rv_page_id); no exponer ID de la pag.
-        $this->getResult()->addValue(null, "avg", $res->current()->avg);
+        if ($res->numRows() == 0){
+            $this->dieWithError(ApiMessage::create("No existe pagina"));
+        }else{
+            $this->getResult()->addValue(null, "title", $title);
+            //$this->getResult()->addValue(null, "page_id", $res->current()->rv_page_id); no exponer ID de la pag.
+            $this->getResult()->addValue(null, "avg", $res->current()->avg);
+        }
     }
     public function getAllowedParams() {
 		return [

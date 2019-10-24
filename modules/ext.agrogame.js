@@ -10,7 +10,7 @@
         } )
             .done( function ( data ) {
                 console.log(data);
-                    if(parseFloat(data.avg) > 4){
+                    if(parseFloat(data.avg) >= 4){
                         loadValidatedSign();
                     }else{
                         loadWarningSign();

@@ -49,6 +49,7 @@
         "BeforePageDisplay": "AgrogameHooks::onBeforePageDisplay",
         "LoadExtensionSchemaUpdates": "AgrogameHooks::onLoadExtensionSchemaUpdates",
         "UserLoginComplete": "AgrogameHooks::onUserLoginComplete",
-        "PageContentSaveComplete": "AgrogameHooks::onPageContentSaveComplete"
+        "PageContentSaveComplete": "AgrogameHooks::onPageContentSaveComplete",
+        "LocalUserCreated": "AgrogameHooks::onLocalUserCreated"
     }
 }
