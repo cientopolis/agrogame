@@ -7,7 +7,7 @@ class ApiAVGPage extends ApiBase {
         global $wgRPRatingPageBlacklist;
         $params = $this->extractRequestParams();
         if(!isset($params["pagetitle"])){
-            $this->dieWithError(ApiMessage::create("Se necesita el parametro title"));
+            $this->dieWithError(ApiMessage::create("Se necesita el parametro pagetitle"));
         }
         $title = Title::newFromText( $params['pagetitle'] );
         if(in_array(str_replace(' ', '_', $title),$wgRPRatingPageBlacklist)){
@@ -26,10 +26,6 @@ class ApiAVGPage extends ApiBase {
             array("GROUP BY" => "rv_page_id")
         );
         if($res->numRows() == 0){ //página aún no se ha votado.
-            $x = "false";
-            if(!in_array($title->getNamespace(),$wgRPRatingAllowedNamespaces)){
-                $x = "true";
-            }
             $this->getResult()->addValue(null, "title", $title);
             //$this->getResult()->addValue(null, "page_id", $res->current()->rv_page_id); no exponer ID de la pag.
             $this->getResult()->addValue(null, "avg",0);

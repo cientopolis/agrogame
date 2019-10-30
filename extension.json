@@ -13,6 +13,7 @@
         "SpecialAgrogame": "specials/SpecialAgrogame.php",
         "ApiAgroknowledge": "includes/ApiAgroknowledge.php",
         "ApiAVGPage": "includes/ApiAVGPage.php",
+        "ApiLastEvents": "includes/ApiLastEvents.php",
         "AgrogameHooks": "includes/AgrogameHooks.php"
     },
     "SpecialPages": {
@@ -43,7 +44,8 @@
     },
     "APIModules": {
         "agroknowledge": "ApiAgroknowledge",
-        "avgpage":"ApiAVGPage"
+        "avgpage":"ApiAVGPage",
+        "lastevents":"ApiLastEvents"
     },
     "Hooks":{
         "BeforePageDisplay": "AgrogameHooks::onBeforePageDisplay",
