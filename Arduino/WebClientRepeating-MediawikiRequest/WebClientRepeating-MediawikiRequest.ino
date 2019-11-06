@@ -88,7 +88,7 @@ void setup() {
   delay(1000);
 }
 
-const char* latest = "20191030142118";
+const char* latest = "00000000000000";
 void loop() {
   
   // if there's incoming data from the net connection.
@@ -105,7 +105,17 @@ void loop() {
           JsonArray events = doc["events"];
           latest = doc["latest"];
           for (auto event : events) {
-            Serial.println(event.as<int>());
+            switch (event.as<int>()) {
+              case 0:
+                event0();
+                break;
+              case 1:
+                event1();
+                break;
+              default:
+                //Nothing
+                break;
+            }
           }
           Serial.println(latest);
         }
@@ -147,5 +157,12 @@ void httpRequest(const char* latest) {
     //Serial.println("connection failed");
   }
   //Serial.println("Sale de httpRequest...");
+}
 
+void event0(){
+  Serial.println("Evento 0");
+}
+
+void event1(){
+  Serial.println("Evento 1");
 }
