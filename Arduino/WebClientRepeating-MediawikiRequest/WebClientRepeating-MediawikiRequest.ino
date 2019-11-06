@@ -1,36 +1,14 @@
-/*
-  Esta versión funciona con mediawiki. Mantiene un NLEDS de la cantidad de paginas que se pueden mapear a un led.
-  Hay un arreglo que representan las últimas calificaciones de cada página. Si no tuvo -1.
-*/
 
 /*
-  Repeating Web client
-
- This sketch connects to a a web server and makes a request
- using a Wiznet Ethernet shield. You can use the Arduino Ethernet shield, or
- the Adafruit Ethernet shield, either one will work, as long as it's got
- a Wiznet Ethernet module on board.
-
- This example uses DNS, by assigning the Ethernet client with a MAC address,
- IP address, and DNS address.
-
- Circuit:
- * Ethernet shield attached to pins 10, 11, 12, 13
-
- created 19 Apr 2012
- by Tom Igoe
- modified 21 Jan 2014
- by Federico Vanzati
-
- http://www.arduino.cc/en/Tutorial/WebClientRepeating
- This code is in the public domain.
-
+ * Ejemplo que viene en el IDE WebClientRepeating pero envía request a mediawiki
  */
 
 #include <SPI.h>
 #include <Ethernet.h>
 #include <ArduinoJson.h>
 #define NLEDS 8
+
+/* ===========DECLARACIONES PARA LA CONEXIÓN ETHERNET=========== */
 
 // assign a MAC address for the ethernet controller.
 // fill in your address here:
@@ -44,15 +22,16 @@ IPAddress myDns(192, 168, 0, 1);
 // initialize the library instance:
 EthernetClient client;
 
-//char server[] = "www.arduino.cc";  // also change the Host line in httpRequest()
+//char server[] = "www.agroknowledge.org";  // also change the Host line in httpRequest()
 IPAddress server(192, 168, 0, 8);
-
-//SETUP PARA EL JSON
-const size_t capacity = JSON_ARRAY_SIZE(10) + JSON_OBJECT_SIZE(2) + 40;
-DynamicJsonDocument doc(capacity);
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
 const unsigned long postingInterval = 10*1000;  // delay between updates, in milliseconds
+
+/* ===========DECLARACIONES PARA USAR ARDUINOJSON=========== */
+const size_t capacity = JSON_ARRAY_SIZE(10) + JSON_OBJECT_SIZE(2) + 40;
+DynamicJsonDocument doc(capacity);
+const char* latest = "00000000000000"; //Primera request.
 
 void setup() {
 
@@ -88,19 +67,14 @@ void setup() {
   delay(1000);
 }
 
-const char* latest = "00000000000000";
 void loop() {
-  
-  // if there's incoming data from the net connection.
-  // send it out the serial port.  This is for debugging
-  // purposes only:
-  //Serial.println("Comienza loop...");
+
   if (client.available()) {
         DeserializationError error = deserializeJson(doc, client);
         if (error) {
           Serial.print(F("deserializeJson() failed: "));
           Serial.println(error.c_str());
-          return;
+          return; //sale de loop().
         }else{
           JsonArray events = doc["events"];
           latest = doc["latest"];
@@ -124,17 +98,13 @@ void loop() {
   // if ten seconds have passed since your last connection,
   // then connect again and send data:
   if (millis() - lastConnectionTime > postingInterval) {
-    //Serial.println("10 sgs pasaron de la última conexión.");
     httpRequest(latest);
-  }else{
-    //Serial.println("10 NO sgs pasaron de la última conexión.");
   }
 
 }
 
 // this method makes a HTTP connection to the server:
 void httpRequest(const char* latest) {
-  //Serial.println("Dentro de httpRequest...");
   // close any connection before send a new request.
   // This will free the socket on the WiFi shield
   client.stop();
@@ -154,9 +124,8 @@ void httpRequest(const char* latest) {
     lastConnectionTime = millis();
   } else {
     // if you couldn't make a connection:
-    //Serial.println("connection failed");
+    Serial.println("connection failed");
   }
-  //Serial.println("Sale de httpRequest...");
 }
 
 void event0(){
