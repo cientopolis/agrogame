@@ -13,28 +13,7 @@ class ApiLastEvents extends ApiBase {
         if($from == "00000000000000"){
             $latest = gmdate("YmdHis");
         }else{
-            $dbr = wfGetDB( DB_REPLICA );
-            $res = $dbr->query("SELECT * FROM `ag_last_events` WHERE ag_timestamp > '$from'");
-            foreach ($res as $row) {
-                if(preg_replace("/[^0-9]/", "",$row->ag_timestamp) > $latest)
-                    $latest=$row->ag_timestamp;
-                array_push($events, $row->ag_event);
-            }
-            $latest = preg_replace("/[^0-9]/", "",$latest);
-            $f = function($e){
-                switch ($e) {
-                    case 'login':
-                        return 0;
-                        break;
-                    case 'save_page':
-                        return 1;
-                        break;
-                    default:
-                        $this->dieWithError(ApiMessage::create("No se pudo decodificar el evento de la BD."));
-                        break;
-                }
-            };
-            $events = array_map($f, $events);
+            $this->getEventsAndRefreshLastEvent($events, $latest, $from);
         }
         $this->getResult()->addValue(null, "events", $events);
         $this->getResult()->addValue(null, "latest", $latest);
@@ -43,5 +22,16 @@ class ApiLastEvents extends ApiBase {
 		return [
 			'from' => [ ApiBase::PARAM_TYPE => 'string' ]
 		];
-	}
+    }
+    
+    private function getEventsAndRefreshLastEvent(&$events, &$latest, $from){
+        $dbr = wfGetDB( DB_REPLICA );
+        $res = $dbr->query("SELECT replace(replace(ag_event,'login',0),'save_page',1) as  ag_event, replace(replace(replace(ag_timestamp,'-',''),' ',''),':','') as ag_timestamp FROM `ag_last_events` WHERE ag_timestamp > '$from'");
+        foreach ($res as $row) {
+            if($row->ag_timestamp > $latest){
+                $latest=$row->ag_timestamp;
+            }
+            array_push($events, (int)$row->ag_event);
+        }
+    }
 }
