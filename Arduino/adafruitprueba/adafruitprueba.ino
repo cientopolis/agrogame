@@ -17,7 +17,6 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
-  
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
   Serial.begin(9600);
@@ -67,13 +66,7 @@ void startShow(int i) {
 }
 
 // Fill the dots one after the other with a color
-void colorWipe(uint32_t c, uint8_t wait) {
-  for(uint16_t i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, c);
-    strip.show();
-    delay(wait);
-  }
-}
+|
 
 void rainbow(uint8_t wait) {
   uint16_t i, j;
