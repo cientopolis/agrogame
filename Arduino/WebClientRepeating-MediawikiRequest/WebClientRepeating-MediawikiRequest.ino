@@ -1,12 +1,17 @@
 
 /*
- * Ejemplo que viene en el IDE WebClientRepeating pero envía request a mediawiki
- */
+   Ejemplo que viene en el IDE WebClientRepeating pero envía request a mediawiki
+*/
 
 #include <SPI.h>
 #include <Ethernet.h>
 #include <ArduinoJson.h>
-#define NLEDS 8
+#include <Adafruit_NeoPixel.h>
+
+/*===========DECLARACIONES PARA ADAFRUIT===========*/
+#define PIXEL_PIN    7    // Digital IO pin connected to the NeoPixels.
+#define PIXEL_COUNT 8
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 /* ===========DECLARACIONES PARA LA CONEXIÓN ETHERNET=========== */
 
@@ -26,7 +31,7 @@ EthernetClient client;
 IPAddress server(192, 168, 0, 8);
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
-const unsigned long postingInterval = 10*1000;  // delay between updates, in milliseconds
+const unsigned long postingInterval = 10 * 1000; // delay between updates, in milliseconds
 
 /* ===========DECLARACIONES PARA USAR ARDUINOJSON=========== */
 const size_t capacity = JSON_ARRAY_SIZE(10) + JSON_OBJECT_SIZE(2) + 40;
@@ -34,6 +39,14 @@ DynamicJsonDocument doc(capacity);
 const char* latest = "00000000000000"; //Primera request.
 
 void setup() {
+
+  //CONFIGURACIONES DE ADAFRUIT
+  strip.begin();
+  strip.show(); // Initialize all pixels to 'off'
+
+  //CONFIGURACIÓN DE LEDS DE SALIDA
+  pinMode(7,OUTPUT);
+  digitalWrite(7,LOW);
 
   // start serial port:
   Serial.begin(9600);
@@ -70,29 +83,29 @@ void setup() {
 void loop() {
 
   if (client.available()) {
-        DeserializationError error = deserializeJson(doc, client);
-        if (error) {
-          Serial.print(F("deserializeJson() failed: "));
-          Serial.println(error.c_str());
-          return; //sale de loop().
-        }else{
-          JsonArray events = doc["events"];
-          latest = doc["latest"];
-          for (auto event : events) {
-            switch (event.as<int>()) {
-              case 0:
-                event0();
-                break;
-              case 1:
-                event1();
-                break;
-              default:
-                //Nothing
-                break;
-            }
-          }
-          Serial.println(latest);
+    DeserializationError error = deserializeJson(doc, client);
+    if (error) {
+      Serial.print(F("deserializeJson() failed: "));
+      Serial.println(error.c_str());
+      return; //sale de loop().
+    } else {
+      JsonArray events = doc["events"];
+      latest = doc["latest"];
+      for (auto event : events) {
+        switch (event.as<int>()) {
+          case 0:
+            event0();
+            break;
+          case 1:
+            event1();
+            break;
+          default:
+            //Nothing
+            break;
         }
+      }
+      Serial.println(latest);
+    }
   }
 
   // if ten seconds have passed since your last connection,
@@ -128,10 +141,25 @@ void httpRequest(const char* latest) {
   }
 }
 
-void event0(){
-  Serial.println("Evento 0");
+void event0() {
+  Serial.println("Evento login!");
+  colorWipe(strip.Color(15,55,0), 50); //VERDE
+  delay(500);
+  colorWipe(strip.Color(0, 0, 0), 25);
 }
 
-void event1(){
-  Serial.println("Evento 1");
+void event1() {
+  Serial.println("Evento pagina guardada!");
+  colorWipe(strip.Color(55,15,0), 50); //VERDE
+  delay(500);
+  colorWipe(strip.Color(0, 0, 0), 25);
+}
+
+//FUNCIONES ADAFRUIT
+void colorWipe(uint32_t c, uint8_t wait) {
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, c);
+    strip.show();
+    delay(wait);
+  }
 }
