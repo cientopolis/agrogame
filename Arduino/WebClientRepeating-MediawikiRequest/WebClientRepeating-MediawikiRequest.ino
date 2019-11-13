@@ -22,14 +22,14 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 // Set the static IP address to use if the DHCP fails to assign
-IPAddress ip(192, 168, 0, 177);
+IPAddress ip(192, 168, 10, 55); //lifia
 IPAddress myDns(192, 168, 0, 1);
 
 // initialize the library instance:
 EthernetClient client;
 
 //char server[] = "www.agroknowledge.org";  // also change the Host line in httpRequest()
-IPAddress server(192, 168, 0, 8);
+IPAddress server(192, 168, 10, 100); //LIFIA
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
 const unsigned long postingInterval = 10 * 1000; // delay between updates, in milliseconds
@@ -131,7 +131,7 @@ void httpRequest(const char* latest) {
   if (client.connect(server, 80)) {
     //Serial.println("connecting...");
     // send the HTTP GET request:
-    client.print("GET /mediawiki-1.31.5(actual)/api.php?action=lastevents&format=json&from=");
+    client.print("GET /mediawiki-1.33.1(actual)/api.php?action=lastevents&format=json&from=");
     client.println(latest);
     client.println("Host: www.arduino.cc");
     client.println("User-Agent: arduino-ethernet");
