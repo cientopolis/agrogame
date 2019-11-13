@@ -28,14 +28,13 @@ void setup() {
 int showType = -1;
 void loop() {
 
-  //colorWipe(strip.Color(55,15,0), 50);
-  colorWipe(strip.Color(15,25,0), 50); //VERDE
+  strip.setPixelColor(0, 0, 255, 0);
+  strip.show();
   delay(500);
   colorWipe(strip.Color(0, 0, 0), 25);
   while(true){
     Serial.println("termino");
     delay(1000);
-    
   }
   
 }
@@ -65,8 +64,15 @@ void startShow(int i) {
   }
 }
 
-// Fill the dots one after the other with a color
-|
+// Fill the dots one after the cother with a color
+
+void colorWipe(uint32_t color, int wait) {
+  for(int i=0; i<strip.numPixels(); i++) { // For each pixel in strip...
+    strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+    strip.show();                          //  Update strip to match
+    delay(wait);                           //  Pause for a moment
+  }
+}
 
 void rainbow(uint8_t wait) {
   uint16_t i, j;

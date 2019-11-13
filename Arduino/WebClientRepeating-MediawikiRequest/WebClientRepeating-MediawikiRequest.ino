@@ -6,12 +6,13 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <ArduinoJson.h>
-#include <Adafruit_NeoPixel.h>
+#include "FastLED.h"
 
-/*===========DECLARACIONES PARA ADAFRUIT===========*/
-#define PIXEL_PIN    7    // Digital IO pin connected to the NeoPixels.
-#define PIXEL_COUNT 8
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
+
+/*===========DECLARACIONES PARA LEDS===========*/
+#define NUM_LEDS 8
+CRGB leds[NUM_LEDS];
+#define PIN 7
 
 /* ===========DECLARACIONES PARA LA CONEXIÓN ETHERNET=========== */
 
@@ -41,8 +42,7 @@ const char* latest = "00000000000000"; //Primera request.
 void setup() {
 
   //CONFIGURACIONES DE ADAFRUIT
-  strip.begin();
-  strip.show(); // Initialize all pixels to 'off'
+  FastLED.addLeds<WS2811, PIN, GRB>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
 
   //CONFIGURACIÓN DE LEDS DE SALIDA
   pinMode(7,OUTPUT);
@@ -82,6 +82,10 @@ void setup() {
 
 void loop() {
 
+  Serial.println("Mostrando estado...");
+  FadeInOut(0xff, 0xff, 0xff); // white 
+  Serial.println("listo!");
+
   if (client.available()) {
     DeserializationError error = deserializeJson(doc, client);
     if (error) {
@@ -111,6 +115,7 @@ void loop() {
   // if ten seconds have passed since your last connection,
   // then connect again and send data:
   if (millis() - lastConnectionTime > postingInterval) {
+    Serial.println("Request...");
     httpRequest(latest);
   }
 
@@ -143,23 +148,97 @@ void httpRequest(const char* latest) {
 
 void event0() {
   Serial.println("Evento login!");
-  colorWipe(strip.Color(15,55,0), 50); //VERDE
-  delay(500);
-  colorWipe(strip.Color(0, 0, 0), 25);
+  CylonBounce(0, 0xff, 0, 2, 50, 25);
 }
 
 void event1() {
-  Serial.println("Evento pagina guardada!");
+  /*Serial.println("Evento pagina guardada!");
   colorWipe(strip.Color(55,15,0), 50); //VERDE
   delay(500);
-  colorWipe(strip.Color(0, 0, 0), 25);
+  colorWipe(strip.Color(0, 0, 0), 25);*/
 }
 
-//FUNCIONES ADAFRUIT
-void colorWipe(uint32_t c, uint8_t wait) {
-  for(uint16_t i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, c);
-    strip.show();
-    delay(wait);
+//FUNCIONES FASTLED
+void FadeInOut(byte red, byte green, byte blue){
+  float r, g, b;
+      
+  for(int k = 0; k < 256; k=k+1) { 
+    r = (k/256.0)*red;
+    g = (k/256.0)*green;
+    b = (k/256.0)*blue;
+    setAll(r,g,b);
+    showStrip();
   }
+     
+  for(int k = 255; k >= 0; k=k-2) {
+    r = (k/256.0)*red;
+    g = (k/256.0)*green;
+    b = (k/256.0)*blue;
+    setAll(r,g,b);
+    showStrip();
+  }
+}
+
+// *** REPLACE TO HERE ***
+
+void showStrip() {
+ #ifdef ADAFRUIT_NEOPIXEL_H 
+   // NeoPixel
+   strip.show();
+ #endif
+ #ifndef ADAFRUIT_NEOPIXEL_H
+   // FastLED
+   FastLED.show();
+ #endif
+}
+
+void setPixel(int Pixel, byte red, byte green, byte blue) {
+ #ifdef ADAFRUIT_NEOPIXEL_H 
+   // NeoPixel
+   strip.setPixelColor(Pixel, strip.Color(red, green, blue));
+ #endif
+ #ifndef ADAFRUIT_NEOPIXEL_H 
+   // FastLED
+   leds[Pixel].r = red;
+   leds[Pixel].g = green;
+   leds[Pixel].b = blue;
+ #endif
+}
+
+void setAll(byte red, byte green, byte blue) {
+  for(int i = 0; i < NUM_LEDS; i++ ) {
+    setPixel(i, red, green, blue); 
+  }
+  showStrip();
+}
+
+//Viborita
+
+void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+
+  for(int i = 0; i < NUM_LEDS-EyeSize-2; i++) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+
+  delay(ReturnDelay);
+
+  for(int i = NUM_LEDS-EyeSize-2; i > 0; i--) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+  
+  delay(ReturnDelay);
 }
