@@ -3,6 +3,7 @@
 
 class ApiLastEvents extends ApiBase {
 	public function execute() {
+        global $wgStateValue;
         $params = $this->extractRequestParams();
         if(!isset($params["from"])){
             $this->dieWithError(ApiMessage::create("Se necesita el parametro from"));
@@ -17,6 +18,7 @@ class ApiLastEvents extends ApiBase {
         }
         $this->getResult()->addValue(null, "events", $events);
         $this->getResult()->addValue(null, "latest", $latest);
+        $this->getResult()->addValue(null, "state", $wgStateValue);
     }
     public function getAllowedParams() {
 		return [

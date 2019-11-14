@@ -29,15 +29,18 @@ IPAddress myDns(192, 168, 0, 1);
 EthernetClient client;
 
 //char server[] = "www.agroknowledge.org";  // also change the Host line in httpRequest()
-IPAddress server(192, 168, 10, 100); //LIFIA
+//IPAddress server(192, 168, 10, 100); //LIFIA
+IPAddress server(192, 168, 0, 8); //MI CASA
+String mediawikiGet = "/mediawiki-1.31.5(actual)/api.php?action=lastevents&format=json&from=";
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
 const unsigned long postingInterval = 10 * 1000; // delay between updates, in milliseconds
 
 /* ===========DECLARACIONES PARA USAR ARDUINOJSON=========== */
-const size_t capacity = JSON_ARRAY_SIZE(10) + JSON_OBJECT_SIZE(2) + 40;
+const size_t capacity = JSON_ARRAY_SIZE(10) + JSON_OBJECT_SIZE(3) + 40;
 DynamicJsonDocument doc(capacity);
 const char* latest = "00000000000000"; //Primera request.
+int state = 0;
 
 void setup() {
 
@@ -82,7 +85,8 @@ void setup() {
 
 void loop() {
 
-  Serial.println("Mostrando estado...");
+  Serial.print("Mostrando estado: ");
+  Serial.println(state);
   FadeInOut(0xff, 0xff, 0xff); // white 
   Serial.println("listo!");
 
@@ -95,6 +99,7 @@ void loop() {
     } else {
       JsonArray events = doc["events"];
       latest = doc["latest"];
+      state = doc["state"];
       for (auto event : events) {
         switch (event.as<int>()) {
           case 0:
@@ -131,7 +136,8 @@ void httpRequest(const char* latest) {
   if (client.connect(server, 80)) {
     //Serial.println("connecting...");
     // send the HTTP GET request:
-    client.print("GET /mediawiki-1.33.1(actual)/api.php?action=lastevents&format=json&from=");
+    client.print("GET ");
+    client.print(mediawikiGet);
     client.println(latest);
     client.println("Host: www.arduino.cc");
     client.println("User-Agent: arduino-ethernet");
