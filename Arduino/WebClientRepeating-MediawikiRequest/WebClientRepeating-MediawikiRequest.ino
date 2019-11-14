@@ -87,7 +87,11 @@ void loop() {
 
   Serial.print("Mostrando estado: ");
   Serial.println(state);
-  FadeInOut(0xff, 0xff, 0xff); // white 
+  if(state !=0){
+    FadeInOut(255 - (state * 12.7), 0xff, 0);
+  }else{
+    FadeInOut(255, 255, 255);
+  }
   Serial.println("listo!");
 
   if (client.available()) {
@@ -154,14 +158,12 @@ void httpRequest(const char* latest) {
 
 void event0() {
   Serial.println("Evento login!");
-  CylonBounce(0, 0xff, 0, 2, 50, 25);
+  CylonBounce(0xff, 0, 0, 2, 50, 25); //rojo
 }
 
 void event1() {
-  /*Serial.println("Evento pagina guardada!");
-  colorWipe(strip.Color(55,15,0), 50); //VERDE
-  delay(500);
-  colorWipe(strip.Color(0, 0, 0), 25);*/
+  Serial.println("Evento login!");
+  CylonBounce(0, 0, 0xff, 2, 50, 25); //azul
 }
 
 //FUNCIONES FASTLED
